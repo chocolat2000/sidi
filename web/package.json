@@ -2,7 +2,7 @@
   "name": "sidi",
   "scripts": {
     "build": "webpack --progress --profile --colors --optimize-minimize --optimize-occurence-order --optimize-dedupe",
-    "watch": "webpack-dev-server --hot --inline --progress --colors --content-base build/",
+    "watch": "webpack-dev-server --progress --colors",
     "test": "echo \"No unit tests and e2e tests yet\" && exit 1"
   },
   "license": "MIT",
@@ -10,10 +10,11 @@
     "alt": "^0.17.3",
     "babel-runtime": "^5.8.20",
     "deepstream.io-client-js": "^0.3.1",
-    "net": "^1.0.2",
     "extract-text-webpack-plugin": "^0.8.2",
+    "net": "^1.0.2",
     "react": "0.13.3",
     "react-bootstrap": "^0.25.1",
+    "react-draggable": "^0.8.1",
     "react-router": "0.13.3",
     "react-slider": "^0.5.1",
     "react-tap-event-plugin": "^0.1.7"
@@ -24,6 +25,7 @@
     "css-loader": "^0.16.0",
     "file-loader": "^0.8.4",
     "html-webpack-plugin": "^1.6.1",
+    "react-hot-loader": "^1.3.0",
     "style-loader": "^0.12.3",
     "webpack": "^1.12.1",
     "webpack-dev-server": "^1.10.1"

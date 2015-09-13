@@ -5,7 +5,7 @@ import deepstream from 'deepstreamConnector';
 
 class NetworkActions {  
 	constructor() {
-		this.generateActions('updateTangiblesList', 'updateTangible');
+		this.generateActions('updateTangiblesList', 'updateTangible', 'updatePartitionsList', 'updatePartition');
 
 	}
 
@@ -13,12 +13,14 @@ class NetworkActions {
 		deepstream.connect(address);
 		
 		deepstream.tangibles = deepstream.ds.record.getList('tangiblesList');
+		deepstream.partitions = deepstream.ds.record.getList('partitionsList');
 
 		let tangRecords = [];
+		let partRecords = [];
 
 		this.dispatch(address);
 
-		deepstream.tangibles.subscribe(data => {
+		deepstream.tangibles.subscribe((data) => {
 			//console.log('list updated : ');
 			//console.log(data);
 			//deepstream.tangibles.setEntries([]);
@@ -32,6 +34,22 @@ class NetworkActions {
 			});
 
 			this.actions.updateTangiblesList(data.map((tang) => {return tang.slice('tangibles/'.length);}));
+		}, true);
+
+		deepstream.partitions.subscribe((data) => {
+			//console.log('list updated : ');
+			//console.log(data);
+			//deepstream.tangibles.setEntries([]);
+			//tangRecords.forEach((tang) => {tang.discard();});
+			partRecords = data.map((part) => {
+				let partRecord = deepstream.ds.record.getRecord(part);
+				partRecord.subscribe(data => {
+					this.actions.updatePartition(data);
+				}, true);
+				return partRecord;
+			});
+
+			this.actions.updatePartitionsList(data.map((tang) => {return tang.slice('partitions/'.length);}));
 		}, true);
 
 		//this.dispatch();
@@ -49,6 +67,21 @@ class NetworkActions {
 
 			deepstream.tangibles.whenReady(() => {
 				deepstream.tangibles.addEntry('tangibles/'+newId);
+			});
+		}
+	}
+
+	addServerPartition() {
+		if(deepstream.tangibles) {
+			let newId = deepstream.ds.getUid();
+			let newPartition = deepstream.ds.record.getRecord('partitions/'+newId);
+			
+			newPartition.set({id:newId});
+
+			console.log('add parition');
+
+			deepstream.partitions.whenReady(() => {
+				deepstream.partitions.addEntry('partitions/'+newId);
 			});
 		}
 	}

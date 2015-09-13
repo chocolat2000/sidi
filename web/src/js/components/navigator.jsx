@@ -5,10 +5,6 @@ class Navigator extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.addTangible = (type) => {
-			this.props.addServerTangible(type);
-		}
-
 	}
 
 	render() {
@@ -16,7 +12,8 @@ class Navigator extends React.Component {
 			<Navbar brand="My Site">
 			<Nav>
 				<NavDropdown eventKey={3} title="Add" id="basic-nav-dropdown">
-					<MenuItem eventKey="1" onSelect={() => {this.addTangible('sid');}}>Sid</MenuItem>
+					<MenuItem eventKey="1" onSelect={() => {this.props.addServerTangible('sid');}}>Sid</MenuItem>
+					<MenuItem eventKey="2" onSelect={() => {this.props.addServerPartition();}}>Partition</MenuItem>
 				</NavDropdown>
 			</Nav>
 			</Navbar>

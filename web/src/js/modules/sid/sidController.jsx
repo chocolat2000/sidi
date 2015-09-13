@@ -63,7 +63,7 @@ class SidController extends React.Component {
 							<Grid>
 							<Row>
 								<Col sm={3} md={2} lg={2}>
-									<Button className="close" bsStyle="link" onClick={this.props.removeServerTangible}>x</Button><h3>Sid Patch</h3>
+									<Button className="close" bsStyle="link" onClick={this.props.removeServerTangible}><span>x</span></Button><h3>Sid Patch</h3>
 								</Col>
 								<Col sm={9} md={10} lg={10}>
 									<Input type="text" value={props.name} onChange={(event) => {this.updateServer('name',event.target.value);}} />

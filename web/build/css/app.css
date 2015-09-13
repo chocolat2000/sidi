@@ -1,47 +1,73 @@
-        .horizontal-slider {
-            width: 100%;
-            max-width: 300px;
-            height: 50px;
-            border: 1px solid grey;
-        }
-        .vertical-slider {
-            height: 300px;
-            width: 50px;
-            border: 1px solid grey;
-        }
-        .handle {
-            font-size: 0.9em;
-            text-align: center;
-            background-color: black;
-            color: white;
-            cursor: pointer;
-        }
-        .handle.active {
-            background-color: grey;
-        }
+.horizontal-slider {
+    width: 100%;
+    max-width: 300px;
+    height: 50px;
+    border: 1px solid grey;
+}
+.vertical-slider {
+    height: 300px;
+    width: 50px;
+    border: 1px solid grey;
+}
+.handle {
+    font-size: 0.9em;
+    text-align: center;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+.handle.active {
+    background-color: grey;
+}
 
-        .horizontal-slider .handle {
-            width: 50px;
-            height: 48px;
-            line-height: 48px;
-        }
-        .vertical-slider .handle {
-            width: 48px;
-            height: 50px;
-            line-height: 50px;
-        }
-        .bar {
-            position: relative;
-            background: #ddd;
-        }
-        .horizontal-slider .bar {
-            top: 20px;
-            height: 10px;
-        }
-        .vertical-slider .bar {
-            left: 20px;
-            width: 10px;
-        }
+.horizontal-slider .handle {
+    width: 50px;
+    height: 48px;
+    line-height: 48px;
+}
+.vertical-slider .handle {
+    width: 48px;
+    height: 50px;
+    line-height: 50px;
+}
+.bar {
+    position: relative;
+    background: #ddd;
+}
 
+.horizontal-slider .bar {
+    top: 20px;
+    height: 10px;
+}
+.vertical-slider .bar {
+    left: 20px;
+    width: 10px;
+}
 
+.partition {
+    position: relative;
+}
 
+.partition .content {
+    width: 600px;
+    height: 200px;
+    margin-left: 5px;
+    background-color: rgb(102,102,102);
+    position: relative;
+    float: left;
+}
+
+.partition .note {
+    width: 20px;
+    height: 8px;
+    background-color: black;
+    cursor: pointer;
+}
+
+.partition .note .handler {
+    width: 1px;
+    height: 100%;
+    float: right;
+    background-color: red;
+    cursor: col-resize;
+}
