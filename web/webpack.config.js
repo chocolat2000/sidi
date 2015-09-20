@@ -12,8 +12,9 @@ module.exports = {
   cache: true,
 
   entry: {
+    common: ['webpack/hot/only-dev-server', 'react', 'react/addons', 'react-router', 'react-bootstrap', 'react-draggable', 'uuid', 'alt', 'alt/AltContainer', 'deepstream.io-client-js'],
     module: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', path.join(srcPath, 'js/module.js')],
-    common: ['react', 'react/addons', 'react-router', 'react-tap-event-plugin', 'react-bootstrap', 'react-draggable', 'alt', 'alt/AltContainer', 'deepstream.io-client-js', 'webpack/hot/only-dev-server']
+    //styles: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', path.join(srcPath, 'styles/app.scss')]
   },
 
   resolve: {
@@ -32,8 +33,9 @@ module.exports = {
 
   module: {
     loaders: [
-    {test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot','babel-loader?cacheDirectory']},
-    {test: /\.css$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
+      //{test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot','babel-loader?cacheDirectory']},
+      {test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel']},
+      {test: /\.scss$/, loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap')},
     ]
   },
 /*
@@ -54,7 +56,7 @@ module.exports = {
   ],
 
   debug: true,
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'eval',
   
   devServer: {
     contentBase: './build',

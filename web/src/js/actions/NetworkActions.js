@@ -72,7 +72,7 @@ class NetworkActions {
 	}
 
 	addServerPartition() {
-		if(deepstream.tangibles) {
+		if(deepstream.partitions) {
 			let newId = deepstream.ds.getUid();
 			let newPartition = deepstream.ds.record.getRecord('partitions/'+newId);
 			
@@ -98,6 +98,18 @@ class NetworkActions {
 		}
 	}
 
+	removeServerParition(id) {
+		if(deepstream.partitions) {
+			console.log('remove tangible id ' + id);
+			deepstream.partitions.whenReady(() => {
+				deepstream.partitions.removeEntry('partitions/'+id);
+			});
+			deepstream.ds
+						.record
+						.getRecord('partitions/'+id).delete();
+		}
+	}
+
 	updateServerTangible(newVal) {
 		if(deepstream.ds) {
 			if( newVal.hasOwnProperty('id') &&
@@ -113,6 +125,23 @@ class NetworkActions {
 			throw "Not connected to deepstream !";
 		}
 	}
+
+	updateServerPartition(newVal) {
+		if(deepstream.ds) {
+			if( newVal.hasOwnProperty('id') &&
+				newVal.hasOwnProperty('component') &&
+				newVal.hasOwnProperty('value')) {
+
+				deepstream.ds
+						.record
+						.getRecord('partitions/'+newVal.id)
+						.set(newVal.component,newVal.value);
+			}
+		} else {
+			throw "Not connected to deepstream !";
+		}
+	}
+
 
 }
 

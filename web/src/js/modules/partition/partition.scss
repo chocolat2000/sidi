@@ -1,0 +1,91 @@
+$part-width: 800px;
+$part-height: 200px;
+
+$keyb-width: 40px;
+$keyb-height: 200px;
+
+.partition {
+    position: relative;
+    margin-top: 5px;  
+
+    .content {
+        width: $part-width;
+        height: $part-height;
+        margin-left: $keyb-width + 5px;
+        background-color: rgb(192,192,192);
+        position: absolute;
+
+        .timeline {
+            font-size: 0;
+            width: 0px;
+            height: 100%;
+            color: transparent;
+            border: 1px solid rgb(204,153,0);
+            z-index: 10;
+            animation: timeline 10s linear infinite;
+        }
+    }
+
+    .note {
+        width: 20px;
+        height: 8px;
+        background-color: black;
+        cursor: pointer;
+        //z-index: -10;
+        position: absolute;
+
+        .handler {
+            width: 1px;
+            height: 100%;
+            float: right;
+            background-color: red;
+            cursor: col-resize;
+        }
+    }
+
+    ol.keyboard {
+        padding: 0;
+        font-size: 0;
+    }
+
+    .keyboard {
+        width: $keyb-width;
+        height: $part-height;
+        color: transparent;
+        float: left;
+
+        li {
+            width: 38 / 40 * $keyb-width;
+            height: 10px;
+            border: 1px solid grey;
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+            z-index: 1;
+            background-color: white;
+        }
+
+
+        li.black {
+            position: absolute;
+            z-index: 2;
+            width: 28 / 40 * $keyb-width;
+            height: 8px;
+            left: 0px;
+            border-color: rgb(56,56,56);
+            margin-top: 6px;
+            background-color: black;
+        }
+        
+    }
+
+}
+
+
+
+@keyframes timeline {
+    100% {
+        transform: translate($part-width, 0);
+    }
+}
+

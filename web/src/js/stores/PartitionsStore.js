@@ -15,11 +15,11 @@ class PartitionsStore {
   	let newPart = {};
   	newPart[part.id] = part;
   	this.setState(newPart);
-  	//console.log('Tangibles updated !',this.state);
+  	console.log('Paritions updated !',this.state);
   }
 
   static getPartition(id) {
-  	return this.state[id];
+  	return this.state[id] || null;
   }
 }
 

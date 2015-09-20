@@ -1,16 +1,15 @@
-// Bootstrapping module
-import React from 'react';  
-import Router from 'react-router';  
-import routes from 'routes';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+'use strict';
 
-//Needed for onTouchTap
-//Can go away when react 1.0 release
-//Check this repo:
-//https://github.com/zilverline/react-tap-event-plugin
-injectTapEventPlugin();
+import React from 'react';  
+import ReactDOM from 'react-dom'
+import {Router,Route} from 'react-router';  
+
+import Main from 'components/main';  
+
 window.React = React;
 
-Router.run(routes, Router.HistoryLocation, (Root, state) => {
-	React.render(<Root {...state}/>, document.getElementById('content'));
-});
+ReactDOM.render((
+	<Router>
+		<Route path="/" component={Main} />
+	</Router>
+	), document.getElementById('content'));

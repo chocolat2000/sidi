@@ -4,13 +4,14 @@ import connectToStores from 'alt/utils/connectToStores';
 import AltContainer from 'alt/AltContainer';
 import TangiblesListStore from 'stores/TangiblesListStore';
 import PartitionsListStore from 'stores/PartitionsListStore';
+import PartitionsStore from 'stores/PartitionsStore';
 import NetworkActions from 'actions/NetworkActions';
 
 import {Panel} from 'react-bootstrap';
 
 import Navigator from 'components/navigator'
 import SidController from 'modules/sid/sidController'
-import Partition from 'modules/partition'
+import Partition from 'modules/partition/partition'
 
 class Main extends React.Component {
 
@@ -32,7 +33,8 @@ class Main extends React.Component {
     return (
       <div className="container">
         <AltContainer actions={NetworkActions} component={Navigator} />
-        {this.props.tangibles.map((id,key) => {
+        {this.props.tangibles ?
+          this.props.tangibles.map((id,key) => {
           //console.log(TangiblesStore.getState());
           //let tangible = TangiblesStore.getTangible(id) || {};
           //console.log('tangible');
@@ -46,15 +48,33 @@ class Main extends React.Component {
             );
           //  break;
           //} //switch
-        })}
+          })
+          : null
+        }
         
-        {this.props.partitions.map((id,key) => {
+        {this.props.partitions ?
+          this.props.partitions.map((id,key) => {
             return (
               <Panel key={key}>
-                <Partition partitionId={id} />
+                <AltContainer
+                  store={
+                    (props) => {
+                      return {
+                        store: PartitionsStore,
+                        value: PartitionsStore.getPartition(id)
+                      };
+                    }
+                  }
+
+                  actions={NetworkActions}>
+
+                  <Partition paritionId={id} />
+                </AltContainer>
               </Panel>
             );
-        })}
+          })
+          : null
+        }
 
       </div>
     );

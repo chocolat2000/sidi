@@ -1,6 +1,5 @@
 import React from 'react';
 import AltContainer from 'alt/AltContainer';
-import shallowEqual from 'react/lib/shallowEqual';
 
 //import connectToStores from 'alt/utils/connectToStores';  
 import TangiblesStore from 'stores/TangiblesStore';
@@ -8,6 +7,8 @@ import Range from 'components/range';
 import SidActions from './sidActions';
 
 import {Grid, Row, Col, Button, Tabs, Tab, Input} from 'react-bootstrap';
+
+require('./sidController.scss');
 
 class SidController extends React.Component {
 
@@ -53,7 +54,8 @@ class SidController extends React.Component {
 
 				shouldComponentUpdate={
 					(nextProps) => {
-						return 	!shallowEqual(TangiblesStore.getTangible(this.props.tangibleId), nextProps);
+						//return 	React.addons.shallowCompare(TangiblesStore.getTangible(this.props.tangibleId), nextProps);
+						return true;
 					}
 				}
 

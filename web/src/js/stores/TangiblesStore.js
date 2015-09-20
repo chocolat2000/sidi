@@ -19,7 +19,7 @@ class TangiblesStore {
   }
 
   static getTangible(id) {
-  	return this.state[id];
+  	return this.state[id] || null;
   }
 }
 

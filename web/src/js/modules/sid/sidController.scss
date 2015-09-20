@@ -43,31 +43,3 @@
     left: 20px;
     width: 10px;
 }
-
-.partition {
-    position: relative;
-}
-
-.partition .content {
-    width: 600px;
-    height: 200px;
-    margin-left: 5px;
-    background-color: rgb(102,102,102);
-    position: relative;
-    float: left;
-}
-
-.partition .note {
-    width: 20px;
-    height: 8px;
-    background-color: black;
-    cursor: pointer;
-}
-
-.partition .note .handler {
-    width: 1px;
-    height: 100%;
-    float: right;
-    background-color: red;
-    cursor: col-resize;
-}

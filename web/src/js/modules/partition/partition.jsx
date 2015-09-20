@@ -9,6 +9,8 @@ import PartitionTimeBar from './partitionTimeBar';
 
 import {ButtonToolbar,Button} from 'react-bootstrap';
 
+require('./partition.scss');
+
 
 class Partition extends React.Component {
 	constructor(props) {
@@ -46,10 +48,11 @@ class Partition extends React.Component {
 
 	render() {
 		return(
-			<div className="partition">
+			<div className="container">
 	            <ButtonToolbar>
 	                <Button bsSize="xsmall" onClick={this.addNote}>Add note</Button>
                 </ButtonToolbar>
+                <div className="partition">
 				<PartitionKeyboard />
 				<div className="content">
 					<PartitionTimeBar />
@@ -60,6 +63,7 @@ class Partition extends React.Component {
 						}
 						return notes;
 					})()}
+				</div>
 				</div>
 			</div>
 			);

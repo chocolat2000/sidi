@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSlider from 'react-slider';
+import ReactSlider from './react-slider';
 
 class Range extends React.Component {
 	constructor(props) {
