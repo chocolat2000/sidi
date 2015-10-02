@@ -1,6 +1,8 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 
+import shallowCompare from 'react-addons-shallow-compare';
+
 import uuid from 'uuid';
 
 import PartitionKeyboard from './partitionKeyboard';
@@ -18,19 +20,10 @@ class Partition extends React.Component {
 
 
 		this.addNote = () => {
-			let notes = this.props.notes ? JSON.parse(JSON.stringify(this.props.notes)) : {};
-			notes[uuid.v4()] = {
-				position: {
-					x: 0,
-					y: 0
-				},
-				length: 10
-			};
-
 			this.props.updateServerPartition({
-				id: this.props.paritionId,
+				id: this.props.id,
 				component: 'notes',
-				value: notes
+				value: Object.assign({}, this.props.notes, {[uuid.v4()]: {position:{x:0,y:0},length:10}})
 			});
 		}
 
@@ -39,11 +32,15 @@ class Partition extends React.Component {
 			notes[noteId] = note;
 
 			this.props.updateServerPartition({
-				id: this.props.paritionId,
+				id: this.props.id,
 				component: 'notes',
 				value: notes
 			});
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
 	}
 
 	render() {
@@ -53,17 +50,17 @@ class Partition extends React.Component {
 	                <Button bsSize="xsmall" onClick={this.addNote}>Add note</Button>
                 </ButtonToolbar>
                 <div className="partition">
-				<PartitionKeyboard />
-				<div className="content">
-					<PartitionTimeBar />
-					{(() => {
-						let notes = [];
-						for (let noteId in this.props.notes) {
-							notes.push(<PartitionNote key={noteId} {...this.props.notes[noteId]} changeNote={(note) => {this.changeNote(noteId,note);}} />);
-						}
-						return notes;
-					})()}
-				</div>
+					<PartitionKeyboard />
+					<div className="content">
+						<PartitionTimeBar />
+						{(() => {
+							let notes = [];
+							for (let noteId in this.props.notes) {
+								notes.push(<PartitionNote key={noteId} {...this.props.notes[noteId]} changeNote={(note) => {this.changeNote(noteId,note);}} />);
+							}
+							return notes;
+						})()}
+					</div>
 				</div>
 			</div>
 			);

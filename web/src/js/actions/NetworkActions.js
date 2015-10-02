@@ -1,148 +1,123 @@
-import flux from 'control';
+import {createAction} from 'redux-actions';
+import deepstream from 'deepstream.io-client-js';
 
-import deepstream from 'deepstreamConnector';
-//import uuid from 'uuid';
+export const updateTangiblesList = createAction('UPDATE_TANGIBLES_LIST');
+export const updateTangible = createAction('UPDATE_TANGIBLE');
+export const updatePartitionsList = createAction('UPDATE_PARTITIONS_LIST');
+export const updatePartition = createAction('UPDATE_PARTITION');
 
-class NetworkActions {  
-	constructor() {
-		this.generateActions('updateTangiblesList', 'updateTangible', 'updatePartitionsList', 'updatePartition');
 
-	}
+let ds = deepstream('localhost:6020').login(); 
+let tangibles = ds.record.getList('tangiblesList');
+let partitions = ds.record.getList('partitionsList');
+let tangRecords = [];
+let partRecords = [];
 
-	connectDeepStream(address) {
-		deepstream.connect(address);
-		
-		deepstream.tangibles = deepstream.ds.record.getList('tangiblesList');
-		deepstream.partitions = deepstream.ds.record.getList('partitionsList');
-
-		let tangRecords = [];
-		let partRecords = [];
-
-		this.dispatch(address);
-
-		deepstream.tangibles.subscribe((data) => {
+export const registerTangibles = () =>
+	(dispatch, getState) => {
+		tangibles.subscribe((data) => {
 			//console.log('list updated : ');
 			//console.log(data);
 			//deepstream.tangibles.setEntries([]);
 			//tangRecords.forEach((tang) => {tang.discard();});
 			tangRecords = data.map((tang) => {
-				let tangRecord = deepstream.ds.record.getRecord(tang);
+				let tangRecord = ds.record.getRecord(tang);
 				tangRecord.subscribe(data => {
-					this.actions.updateTangible(data);
+					dispatch(updateTangible(data));
 				}, true);
 				return tangRecord;
 			});
 
-			this.actions.updateTangiblesList(data.map((tang) => {return tang.slice('tangibles/'.length);}));
+			dispatch(updateTangiblesList());
 		}, true);
+	}
 
-		deepstream.partitions.subscribe((data) => {
+
+export const registerPartitions = () =>
+	(dispatch, getState) => {
+		partitions.subscribe((data) => {
 			//console.log('list updated : ');
 			//console.log(data);
 			//deepstream.tangibles.setEntries([]);
 			//tangRecords.forEach((tang) => {tang.discard();});
 			partRecords = data.map((part) => {
-				let partRecord = deepstream.ds.record.getRecord(part);
+				let partRecord = ds.record.getRecord(part);
 				partRecord.subscribe(data => {
-					this.actions.updatePartition(data);
+					dispatch(updatePartition(data));
 				}, true);
 				return partRecord;
 			});
 
-			this.actions.updatePartitionsList(data.map((tang) => {return tang.slice('partitions/'.length);}));
+			dispatch(updatePartitionsList());
 		}, true);
-
-		//this.dispatch();
-
 	}
 
-	addServerTangible(type) {
-		if(deepstream.tangibles) {
-			let newId = deepstream.ds.getUid();
-			let newTangible = deepstream.ds.record.getRecord('tangibles/'+newId);
+
+export const serverTangibleAdded = createAction('SERVER_TANGIBLE_ADDED');
+
+export const addServerTangible = (type) =>
+	(dispatch, getState) => {
+		if(tangibles) {
+			let newId = ds.getUid();
+			let newTangible = ds.record.getRecord('tangibles/'+newId);
 			
 			newTangible.set({id:newId,type:type});
 
-			console.log('add tangible ' + type);
-
-			deepstream.tangibles.whenReady(() => {
-				deepstream.tangibles.addEntry('tangibles/'+newId);
+			tangibles.whenReady(() => {
+				tangibles.addEntry('tangibles/'+newId);
+				dispatch(serverTangibleAdded());
 			});
+		}
+
+	}
+
+export const serverTangibleUpdated = createAction('SERVER_TANGIBLE_UPDATED');
+
+export const updateServerTangible = (newVal) =>
+	(dispatch, getState) => {
+		if( newVal.hasOwnProperty('id') &&
+			newVal.hasOwnProperty('component') &&
+			newVal.hasOwnProperty('value')) {
+
+			ds.record
+				.getRecord('tangibles/'+newVal.id)
+				.set(newVal.component,newVal.value);
+
+			dispatch(serverTangibleUpdated());
 		}
 	}
 
-	addServerPartition() {
-		if(deepstream.partitions) {
-			let newId = deepstream.ds.getUid();
-			let newPartition = deepstream.ds.record.getRecord('partitions/'+newId);
+
+export const serverPartitionAdded = createAction('SERVER_PARTITION_ADDED');
+
+export const addServerPartition = (type) =>
+	(dispatch, getState) => {
+		if(partitions) {
+			let newId = ds.getUid();
+			let newPartitions = ds.record.getRecord('partitions/'+newId);
 			
-			newPartition.set({id:newId});
+			newPartitions.set({id:newId,type:type});
 
-			console.log('add parition');
-
-			deepstream.partitions.whenReady(() => {
-				deepstream.partitions.addEntry('partitions/'+newId);
+			partitions.whenReady(() => {
+				partitions.addEntry('partitions/'+newId);
+				dispatch(serverPartitionAdded());
 			});
 		}
+
 	}
 
-	removeServerTangible(id) {
-		if(deepstream.tangibles) {
-			console.log('remove tangible id ' + id);
-			deepstream.tangibles.whenReady(() => {
-				deepstream.tangibles.removeEntry('tangibles/'+id);
-			});
-			deepstream.ds
-						.record
-						.getRecord('tangibles/'+id).delete();
+export const serverPartitionUpdated = createAction('SERVER_PARITION_UPDATED');
+
+export const updateServerPartition = (newVal) =>
+	(dispatch, getState) => {
+		if( newVal.hasOwnProperty('id') &&
+			newVal.hasOwnProperty('component') &&
+			newVal.hasOwnProperty('value')) {
+
+			ds.record
+				.getRecord('partitions/'+newVal.id)
+				.set(newVal.component,newVal.value);
+
+			dispatch(serverPartitionUpdated());
 		}
 	}
-
-	removeServerParition(id) {
-		if(deepstream.partitions) {
-			console.log('remove tangible id ' + id);
-			deepstream.partitions.whenReady(() => {
-				deepstream.partitions.removeEntry('partitions/'+id);
-			});
-			deepstream.ds
-						.record
-						.getRecord('partitions/'+id).delete();
-		}
-	}
-
-	updateServerTangible(newVal) {
-		if(deepstream.ds) {
-			if( newVal.hasOwnProperty('id') &&
-				newVal.hasOwnProperty('component') &&
-				newVal.hasOwnProperty('value')) {
-
-				deepstream.ds
-						.record
-						.getRecord('tangibles/'+newVal.id)
-						.set(newVal.component,newVal.value);
-			}
-		} else {
-			throw "Not connected to deepstream !";
-		}
-	}
-
-	updateServerPartition(newVal) {
-		if(deepstream.ds) {
-			if( newVal.hasOwnProperty('id') &&
-				newVal.hasOwnProperty('component') &&
-				newVal.hasOwnProperty('value')) {
-
-				deepstream.ds
-						.record
-						.getRecord('partitions/'+newVal.id)
-						.set(newVal.component,newVal.value);
-			}
-		} else {
-			throw "Not connected to deepstream !";
-		}
-	}
-
-
-}
-
-export default flux.createActions(NetworkActions);  

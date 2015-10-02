@@ -1,26 +1,7 @@
-import flux from 'control';  
-import actions from 'actions/NetworkActions';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducers from 'reducers/Reducers';
 
-class TangiblesStore {
-  constructor() {
-  	this.state = {};
+let createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
-  	this.bindListeners({
-      updateTangible: actions.updateTangible
-    });
-
-  }
-  
-  updateTangible(tang) {
-  	let newTang = {};
-  	newTang[tang.id] = tang;
-  	this.setState(newTang);
-  	//console.log('Tangibles updated !',this.state);
-  }
-
-  static getTangible(id) {
-  	return this.state[id] || null;
-  }
-}
-
-export default flux.createStore(TangiblesStore);
+export default createStoreWithMiddleware(reducers);
