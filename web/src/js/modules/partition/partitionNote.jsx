@@ -1,5 +1,5 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+import Draggable from 'react-draggable2';
 
 class PartitionNote extends React.Component {
 	constructor(props) {

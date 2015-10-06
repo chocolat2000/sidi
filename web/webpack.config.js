@@ -12,7 +12,7 @@ module.exports = {
   cache: true,
 
   entry: {
-    common: ['webpack/hot/only-dev-server', 'react', 'redux', 'react-redux', 'redux-actions', 'react-router', 'react-bootstrap', 'react-draggable', 'uuid', 'deepstream.io-client-js'],
+    common: ['webpack/hot/only-dev-server', 'react', 'redux', 'react-redux', 'redux-actions', 'react-router', 'react-bootstrap', 'react-draggable2', 'uuid', 'deepstream.io-client-js'],
     module: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', path.join(srcPath, 'js/module.js')],
     //styles: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', path.join(srcPath, 'styles/app.scss')]
   },

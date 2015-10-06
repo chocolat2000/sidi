@@ -1,5 +1,4 @@
 import React from 'react';
-import Draggable from 'react-draggable';
 
 import shallowCompare from 'react-addons-shallow-compare';
 
@@ -53,13 +52,11 @@ class Partition extends React.Component {
 					<PartitionKeyboard />
 					<div className="content">
 						<PartitionTimeBar />
-						{(() => {
-							let notes = [];
-							for (let noteId in this.props.notes) {
-								notes.push(<PartitionNote key={noteId} {...this.props.notes[noteId]} changeNote={(note) => {this.changeNote(noteId,note);}} />);
-							}
-							return notes;
-						})()}
+						{
+							(Object.keys(this.props.notes).map(
+								(noteId) => (<PartitionNote key={noteId} {...this.props.notes[noteId]} changeNote={(note) => {this.changeNote(noteId,note);}} />)
+							)
+						)}
 					</div>
 				</div>
 			</div>
